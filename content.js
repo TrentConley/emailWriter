@@ -1,15 +1,16 @@
 // Wait for the page to finish loading
 window.addEventListener("load", function () {
   // Find the textarea element where the user is composing their email
-  var textarea = document.querySelector("textarea[aria-label='Message Body']");
-
+  let textarea = document.querySelector("textarea[aria-label='Message Body']");
+  console.log(textarea);
   // If the textarea element is not found, set up a mutation observer to listen for when it is added to the page
   if (!textarea) {
-    var observer = new MutationObserver(function (mutations) {
+    console.log("no text area");
+    let observer = new MutationObserver(function (mutations) {
       mutations.forEach(function (mutation) {
         // Check if the textarea element has been added to the page
-        var addedNodes = Array.from(mutation.addedNodes);
-        var textarea = addedNodes.find(function (node) {
+        let addedNodes = Array.from(mutation.addedNodes);
+        let textarea = addedNodes.find(function (node) {
           return node.tagName === "TEXTAREA";
         });
 
@@ -34,10 +35,10 @@ window.addEventListener("load", function () {
 
 function setUpObserver(textarea) {
   // Set up a mutation observer to detect when the text in the textarea changes
-  var observer = new MutationObserver(function (mutations) {
+  let observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
       // When the text changes, retrieve the current text from the textarea
-      var text = textarea.value;
+      let text = textarea.value;
 
       // Check if the text includes the word "hello"
       if (text.includes("hello")) {
