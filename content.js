@@ -1,35 +1,33 @@
-// Set up a loop to check for the textarea element every 500 milliseconds
-let interval = setInterval(function () {
-  // Find the textarea element where the user is composing their email
-  let textarea = document.querySelector("textarea[aria-label='Message Body']");
-
-  if (textarea) {
-    console.log("draft is open");
-    // A draft is open
-    clearInterval(interval);
-    console.log("cleared interval");
-    // Set up a mutation observer to detect when the text in the textarea changes
-    let observer = new MutationObserver(function (mutations) {
-      console.log("mutation detected");
-      mutations.forEach(function (mutation) {
-        // When the text changes, retrieve the current text from the textarea
-        let text = textarea.value;
-        console.log(text);
-        // Replace "hello" with "zork" in the text
-        text = text.replace("hello", "zork");
-
-        // Update the text in the textarea
-        textarea.value = text;
-      });
+// Replace "hello" with "zork" in the body of the draft message
+function replaceHelloWithZork() {
+  // Retrieve the draft message
+  gapi.client.gmail.users.drafts
+    .get({
+      userId: "me",
+      id: draftId,
+    })
+    .then((response) => {
+      const draftMessage = response.result;
+      // Modify the body of the draft message
+      draftMessage.body = draftMessage.body.replace("hello", "zork");
+      // Update the draft message with the modified body
+      gapi.client.gmail.users.drafts
+        .update({
+          userId: "me",
+          id: draftId,
+          resource: draftMessage,
+        })
+        .then((response) => {
+          console.log("Draft message updated");
+        });
     });
+}
 
-    // Start observing the textarea for changes
-    observer.observe(textarea, {
-      characterData: true,
-      subtree: true,
-    });
-    console.log("observer is set up.");
-  } else {
-    // No draft is open
+// Set an interval to check for the presence of the textarea element used for the body of the email in Gmail
+setInterval(() => {
+  // Check if the textarea element is present
+  if (document.querySelector('[aria-label="Message Body"]')) {
+    // If the textarea element is present, call the replaceHelloWithZork function
+    replaceHelloWithZork();
   }
-}, 500);
+}, 1000); // Check for the presence of the textarea element every 1000 milliseconds (1 second)
