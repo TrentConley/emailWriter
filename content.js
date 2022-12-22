@@ -7,11 +7,17 @@ window.addEventListener("load", function () {
   if (!textarea) {
     console.log("no text area");
     let observer = new MutationObserver(function (mutations) {
+      console.log("mutation oberved in the documnt body");
       mutations.forEach(function (mutation) {
         // Check if the textarea element has been added to the page
         let addedNodes = Array.from(mutation.addedNodes);
         let textarea = addedNodes.find(function (node) {
-          return node.tagName === "TEXTAREA";
+          console.log("if statement triggered");
+          console.log(node.tagName);
+          return (
+            node.tagName === "TEXTAREA" &&
+            node.getAttribute("aria-label") === "Message Body"
+          );
         });
 
         // If the textarea element has been added, set up the MutationObserver to listen for changes to the text
@@ -28,6 +34,7 @@ window.addEventListener("load", function () {
       subtree: true,
     });
   } else {
+    console.log("text area is found");
     // If the textarea element is found, set up the MutationObserver to listen for changes to the text
     setUpObserver(textarea);
   }
@@ -39,7 +46,7 @@ function setUpObserver(textarea) {
     mutations.forEach(function (mutation) {
       // When the text changes, retrieve the current text from the textarea
       let text = textarea.value;
-
+      console.log("text: " + text);
       // Check if the text includes the word "hello"
       if (text.includes("hello")) {
         // Replace the word "hello" with "zork" in the textarea
@@ -54,3 +61,4 @@ function setUpObserver(textarea) {
     subtree: true,
   });
 }
+console.log("we got this far");
