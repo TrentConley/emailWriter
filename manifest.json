@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Text Editing Extension",
+  "description": "An extension that allows you to read and write text on a page",
+  "version": "1.0",
+  "permissions": ["contentSettings", "activeTab", "declarativeContent", "tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "commands": {
+    "suggest-change": {
+      "suggested_key": {
+        "default": "Alt+Shift+C"
+      },
+      "description": "Suggest a change"
+    }
+  }
+}
