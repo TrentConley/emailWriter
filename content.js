@@ -1,5 +1,7 @@
 // Wait for the page to finish loading
 window.addEventListener("load", function () {
+  console.log("Test");
+
   // Find the textarea element where the user is composing their email
   var textarea = document.querySelector("textarea[aria-label='Message Body']");
 
@@ -15,6 +17,7 @@ window.addEventListener("load", function () {
         textarea.value = text.replace("hello", "zork");
       }
     });
+    System.out.println();
   });
 
   // Start observing the textarea for changes
